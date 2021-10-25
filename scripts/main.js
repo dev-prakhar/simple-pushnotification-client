@@ -1,12 +1,9 @@
 function setupApplication() {
-if (validate()){
-    registerServiceWorker()
-    askPermission()
-    subscribeUserToPush()
-}
-else {
-  return;
-}
+  if (validate()){
+      registerServiceWorker()
+      askPermission()
+      subscribeUserToPush()
+  }
 }
 
 function validate() {
@@ -64,7 +61,7 @@ function subscribeUserToPush() {
 }
 
 function applicationKey() {
-    const padding = '='.repeat((4 - APPLICATION_KEY.length % 4) % 4);
+  const padding = '='.repeat((4 - APPLICATION_KEY.length % 4) % 4);
   const base64 = (APPLICATION_KEY + padding)
     .replace(/\-/g, '+')
     .replace(/_/g, '/');
@@ -94,7 +91,7 @@ function sendSubscriptionToBackEnd(subscription) {
     return response.json();
   })
   .then(function(responseData) {
-    if (!(responseData.data && responseData.data.success)) {
+    if (!(responseData)) {
       throw new Error('Bad response from server.');
     }
   });
