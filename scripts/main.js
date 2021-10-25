@@ -52,8 +52,14 @@ function subscribeUserToPush() {
     return registration.pushManager.subscribe(subscribeOptions);
   })
   .then(function(pushSubscription) {
-    console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
-    return pushSubscription;
+    pushSubscriptionJSON = pushSubscription.toJSON()
+    subscriptionObject = {
+      endpoint : pushSubscriptionJSON.endpoint,
+      key : pushSubscriptionJSON.keys.p256dh,
+      auth : pushSubscriptionJSON.keys.auth
+    }
+    console.log('Received PushSubscription: ', subscriptionObject);
+    sendSubscriptionToBackEnd(subscriptionObject)
   });
 }
 
@@ -71,3 +77,26 @@ function applicationKey() {
   }
   return outputArray;
 }
+
+function sendSubscriptionToBackEnd(subscription) {
+  return fetch('http://localhost:8000/notification-app/push-subscriptions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(subscription)
+  })
+  .then(function(response) {
+    if (!response.ok) {
+      throw new Error('Bad status code from server.', response);
+    }
+
+    return response.json();
+  })
+  .then(function(responseData) {
+    if (!(responseData.data && responseData.data.success)) {
+      throw new Error('Bad response from server.');
+    }
+  });
+}
+
