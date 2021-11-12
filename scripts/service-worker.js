@@ -7,3 +7,9 @@ self.addEventListener('push', function(event) {
     self.registration.showNotification(message.title, message.options)
   );
 });
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow(event.notification.data.url)
+  );
+})
