@@ -6,12 +6,26 @@
     <title>Simple Push Notification</title>
 
     <script src="scripts/main.js"></script>
+        <script src="scripts/handlers.js"></script>
     <script src="scripts/secrets.js"></script>
 
 </head>
 
 <body onload="setupApplication()">
+<div>
+    <button onclick="populate_select()">Populate the Notification</button>
+</div>
+<div>
+    <p>Select Notification from the drop down</p>
+    <select id="notification-dropdown" onchange="show(this)">
+        <option>--CHOOSE NOTIFICATION--</option>
+    </select>
+
+    <p id="selected-option"></p>
+</div>
+<div>
+    <button onclick="trigger_notification()">Send Notification!</button>
+
+</div>
 </body>
-
 </html>
-
